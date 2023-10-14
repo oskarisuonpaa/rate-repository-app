@@ -117,7 +117,9 @@ const Stats = ({ repository }) => {
 
 const RepositoryItem = ({ repository }) => {
   return (
-    <View style={{ backgroundColor: theme.colors.white }}>
+    <View
+      testID="repositoryItem"
+      style={{ backgroundColor: theme.colors.white }}>
       <Description repository={repository} />
       <Stats repository={repository} />
     </View>
