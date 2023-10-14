@@ -24,9 +24,9 @@ const Description = ({ repository }) => {
     child: {
       paddingStart: 10,
       flexDirection: "column",
+      flexShrink: 1,
     },
     description: {
-      flexWrap: "wrap",
       paddingBottom: 5,
     },
     fullName: {
