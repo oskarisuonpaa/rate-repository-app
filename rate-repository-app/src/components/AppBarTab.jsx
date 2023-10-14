@@ -1,9 +1,9 @@
 import Text from "./Text";
 import { Link } from "react-router-native";
 
-const AppBarTab = ({ text, target, style }) => {
+const AppBarTab = ({ text, target, style, onPress }) => {
   return (
-    <Link to={target} style={style}>
+    <Link onPress={onPress} to={target} style={style}>
       <Text color={"white"} fontSize={"subheading"} fontWeight={"bold"}>
         {text}
       </Text>
