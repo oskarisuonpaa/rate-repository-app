@@ -7,15 +7,17 @@ import Text from "./Text";
 const styles = StyleSheet.create({
   errorText: {
     marginTop: 5,
-    color: "red",
+    color: "#d73a4a",
+  },
+  errorContainer: {
+    borderColor: "#d73a4a",
   },
   container: {
     height: 50,
     borderStyle: "solid",
     borderWidth: 1,
     borderRadius: 2,
-    borderColor: "gray",
-    marginBottom: 20,
+    marginTop: 20,
   },
   text: {
     marginTop: "auto",
@@ -29,17 +31,20 @@ const FormikTextInput = ({ name, ...props }) => {
   const showError = meta.touched && meta.error;
 
   return (
-    <View style={styles.container}>
-      <TextInput
-        onChangeText={(value) => helpers.setValue(value)}
-        onBlur={() => helpers.setTouched(true)}
-        value={field.value}
-        error={showError}
-        style={styles.text}
-        {...props}
-      />
+    <>
+      <View
+        style={[styles.container, showError ? styles.errorContainer : null]}>
+        <TextInput
+          onChangeText={(value) => helpers.setValue(value)}
+          onBlur={() => helpers.setTouched(true)}
+          value={field.value}
+          error={showError}
+          style={styles.text}
+          {...props}
+        />
+      </View>
       {showError && <Text style={styles.errorText}>{meta.error}</Text>}
-    </View>
+    </>
   );
 };
 
