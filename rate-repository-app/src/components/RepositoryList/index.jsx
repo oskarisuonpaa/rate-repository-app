@@ -8,11 +8,9 @@ import RepositoryItem from "./RepositoryItem";
 import useRepositories from "../../hooks/useRepositories";
 import { useNavigate } from "react-router-dom";
 import theme from "../../theme";
+import ItemSeparator from "../ItemSeparator";
 
 const styles = StyleSheet.create({
-  separator: {
-    height: 10,
-  },
   searchbar: {
     marginTop: 10,
     backgroundColor: theme.colors.white,
@@ -41,8 +39,6 @@ const ORDER_BY = {
     orderDirection: "ASC",
   },
 };
-
-const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryListHeader = ({
   orderBy,
@@ -86,7 +82,7 @@ export class RepositoryListContainer extends React.Component {
   };
 
   render() {
-    const { repositories, navigate } = this.props;
+    const { repositories, navigate, onEndReach } = this.props;
 
     const repositoryNodes = repositories
       ? repositories.edges.map((edge) => edge.node)
@@ -103,6 +99,8 @@ export class RepositoryListContainer extends React.Component {
         )}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={this.renderHeader}
+        onEndReached={onEndReach}
+        onEndReachedThreshold={0.5}
       />
     );
   }
@@ -115,7 +113,15 @@ const RepositoryList = () => {
 
   const navigate = useNavigate();
 
-  const { repositories } = useRepositories(ORDER_BY[orderBy], debouncedSearch);
+  const { repositories, fetchMore } = useRepositories({
+    first: 8,
+    variables: { ...ORDER_BY[orderBy], searchKeyword: debouncedSearch },
+    fetchPolicy: "cache-and-network",
+  });
+
+  const onEndReach = () => {
+    fetchMore();
+  };
 
   return (
     <RepositoryListContainer
@@ -125,6 +131,7 @@ const RepositoryList = () => {
       searchQuery={searchQuery}
       setSearchQuery={setSearchQuery}
       navigate={navigate}
+      onEndReach={onEndReach}
     />
   );
 };

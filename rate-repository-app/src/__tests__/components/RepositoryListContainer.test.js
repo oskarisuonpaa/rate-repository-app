@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react-native";
-import RepositoryItem from "../../components/RepositoryItem";
+import RepositoryItem from "../../components/RepositoryList/RepositoryItem";
 import { FlatList, View } from "react-native";
 
 const ItemSeparator = () => <View />;
