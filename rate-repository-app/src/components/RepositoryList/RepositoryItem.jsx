@@ -1,7 +1,9 @@
 import { Image, StyleSheet, View } from "react-native";
+import * as Linking from "expo-linking";
 
-import Text from "./Text";
-import theme from "../theme";
+import Text from "../Text";
+import theme from "../../theme";
+import Button from "../Button";
 
 const Description = ({ repository }) => {
   const styles = StyleSheet.create({
@@ -122,6 +124,14 @@ const RepositoryItem = ({ repository }) => {
       style={{ backgroundColor: theme.colors.white }}>
       <Description repository={repository} />
       <Stats repository={repository} />
+      {repository.url && (
+        <View style={{ paddingLeft: 10, paddingRight: 10, paddingBottom: 10 }}>
+          <Button
+            onPress={() => Linking.openURL(repository.url)}
+            text={"Open in GitHub"}
+          />
+        </View>
+      )}
     </View>
   );
 };
