@@ -1,12 +1,12 @@
-import { View, StyleSheet, ScrollView, Pressable } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import Constants from "expo-constants";
-import { ApolloClient, useApolloClient, useQuery } from "@apollo/client";
+import { useApolloClient, useQuery } from "@apollo/client";
+import { useNavigate } from "react-router-native";
 
 import theme from "../../theme";
 import AppBarTab from "./AppBarTab";
 import Text from "../Text";
 import { ME } from "../../graphql/queries";
-import { useState } from "react";
 import useAuthStorage from "../../hooks/useAuthStorage";
 
 const styles = StyleSheet.create({
@@ -24,6 +24,7 @@ const AppBar = () => {
   const result = useQuery(ME);
   const apolloClient = useApolloClient();
   const authStorage = useAuthStorage();
+  const navigate = useNavigate();
 
   if (result.loading) {
     return (
@@ -38,6 +39,7 @@ const AppBar = () => {
   const handleLogout = async () => {
     await authStorage.removeAccessToken();
     apolloClient.resetStore();
+    navigate("/");
   };
 
   return (
@@ -48,6 +50,13 @@ const AppBar = () => {
           <AppBarTab
             text="Sign in"
             target="/signIn"
+            style={{ paddingStart: 10 }}
+          />
+        )}
+        {!user && (
+          <AppBarTab
+            text="Sign up"
+            target="/signUp"
             style={{ paddingStart: 10 }}
           />
         )}
