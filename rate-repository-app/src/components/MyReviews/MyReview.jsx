@@ -1,13 +1,18 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
+import { useNavigate } from "react-router-native";
 import { format } from "date-fns";
 
 import Text from "../Text";
 import theme from "../../theme";
+import Button from "../Button";
+import useDeleteReview from "../../hooks/useDeleteReview";
 
 const styles = StyleSheet.create({
   parent: {
     backgroundColor: theme.colors.white,
-    padding: 10,
+    paddingStart: 10,
+    paddingEnd: 10,
+    paddingTop: 10,
     flexDirection: "row",
   },
   child: {
@@ -29,9 +34,36 @@ const styles = StyleSheet.create({
     marginBottom: "auto",
     color: theme.colors.languageColor,
   },
+  buttons: {
+    backgroundColor: theme.colors.white,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    paddingStart: 10,
+    paddingEnd: 10,
+    paddingBottom: 10,
+  },
 });
 
-const MyReview = ({ review }) => {
+const MyReview = ({ review, refetch }) => {
+  const navigate = useNavigate();
+  const [deleteReview] = useDeleteReview();
+
+  const alert = () =>
+    Alert.alert(
+      "Delete review",
+      "Are you sure you want to delete this review?",
+      [
+        { text: "cancel", style: "cancel" },
+        {
+          text: "delete",
+          onPress: async () => {
+            await deleteReview(review.id);
+            refetch();
+          },
+        },
+      ]
+    );
+
   return (
     <View>
       <View style={styles.parent}>
@@ -52,6 +84,13 @@ const MyReview = ({ review }) => {
           </Text>
           <Text>{review.text}</Text>
         </View>
+      </View>
+      <View style={styles.buttons}>
+        <Button
+          text="View repository"
+          onPress={() => navigate(`/repository/${review.repository.id}`)}
+        />
+        <Button color="red" text="Delete review" onPress={alert} />
       </View>
     </View>
   );

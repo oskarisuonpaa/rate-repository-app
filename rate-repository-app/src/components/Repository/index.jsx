@@ -19,7 +19,7 @@ const RepositoryInfo = ({ repository }) => {
 
 const Repository = () => {
   const id = useParams().id;
-  const { repository, loading } = useRepository(id);
+  const { repository } = useRepository(id);
 
   if (!repository) {
     return;

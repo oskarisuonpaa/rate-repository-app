@@ -1,18 +1,11 @@
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList } from "react-native";
 
 import useMyReviews from "../../hooks/useMyReviews";
 import MyReview from "./MyReview";
-
-const styles = StyleSheet.create({
-  separator: {
-    height: 10,
-  },
-});
-
-const ItemSeparator = () => <View style={styles.separator} />;
+import ItemSeparator from "../ItemSeparator";
 
 const MyReviews = () => {
-  const { user } = useMyReviews();
+  const { user, refetch } = useMyReviews({ includeReviews: true });
 
   if (!user) {
     return;
@@ -23,7 +16,7 @@ const MyReviews = () => {
   return (
     <FlatList
       data={reviews}
-      renderItem={({ item }) => <MyReview review={item} />}
+      renderItem={({ item }) => <MyReview review={item} refetch={refetch} />}
       keyExtractor={({ id }) => id}
       ItemSeparatorComponent={ItemSeparator}
     />

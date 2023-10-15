@@ -5,8 +5,9 @@ import { GET_REPOSITORY } from "../graphql/queries";
 
 const useRepository = (id) => {
   const [repository, setRepository] = useState(null);
-  const { data, error, loading } = useQuery(GET_REPOSITORY, {
+  const { data, loading, ...result } = useQuery(GET_REPOSITORY, {
     variables: { repositoryId: id },
+    fetchPolicy: "cache-and-network",
   });
 
   useEffect(() => {
@@ -15,7 +16,7 @@ const useRepository = (id) => {
     }
   }, [loading]);
 
-  return { repository, loading };
+  return { repository, loading, ...result };
 };
 
 export default useRepository;

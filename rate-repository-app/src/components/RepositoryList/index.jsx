@@ -2,6 +2,7 @@ import { FlatList, View, StyleSheet, Pressable } from "react-native";
 import React, { useState } from "react";
 import { Picker } from "@react-native-picker/picker";
 import { Searchbar } from "react-native-paper";
+import { useDebounce } from "use-debounce";
 
 import RepositoryItem from "./RepositoryItem";
 import useRepositories from "../../hooks/useRepositories";
@@ -110,9 +111,11 @@ export class RepositoryListContainer extends React.Component {
 const RepositoryList = () => {
   const [orderBy, setOrderBy] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearch] = useDebounce(searchQuery, 500);
+
   const navigate = useNavigate();
 
-  const { repositories } = useRepositories(ORDER_BY[orderBy], searchQuery);
+  const { repositories } = useRepositories(ORDER_BY[orderBy], debouncedSearch);
 
   return (
     <RepositoryListContainer

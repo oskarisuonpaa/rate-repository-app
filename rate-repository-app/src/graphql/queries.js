@@ -2,7 +2,7 @@ import { gql } from "@apollo/client";
 import { REPOSITORY_DETAILS } from "./fragments";
 
 export const GET_REPOSITORIES = gql`
-  query (
+  query GetRepositories(
     $orderBy: AllRepositoriesOrderBy
     $orderDirection: OrderDirection
     $searchKeyword: String
@@ -23,14 +23,16 @@ export const GET_REPOSITORIES = gql`
 `;
 
 export const ME = gql`
-  query ($reviews: Boolean!) {
+  query Me($reviews: Boolean!) {
     me {
       username
       reviews @include(if: $reviews) {
         edges {
           node {
+            id
             repository {
               fullName
+              id
             }
             text
             rating
@@ -43,7 +45,7 @@ export const ME = gql`
 `;
 
 export const GET_REPOSITORY = gql`
-  query ($repositoryId: ID!) {
+  query GetRepository($repositoryId: ID!) {
     repository(id: $repositoryId) {
       ...RepositoryDetails
       url
