@@ -2,12 +2,12 @@ import { View, StyleSheet, ScrollView, Pressable } from "react-native";
 import Constants from "expo-constants";
 import { ApolloClient, useApolloClient, useQuery } from "@apollo/client";
 
-import theme from "../theme";
+import theme from "../../theme";
 import AppBarTab from "./AppBarTab";
-import Text from "./Text";
-import { ME } from "../graphql/queries";
+import Text from "../Text";
+import { ME } from "../../graphql/queries";
 import { useState } from "react";
-import useAuthStorage from "../hooks/useAuthStorage";
+import useAuthStorage from "../../hooks/useAuthStorage";
 
 const styles = StyleSheet.create({
   container: {
@@ -47,7 +47,14 @@ const AppBar = () => {
         {!user && (
           <AppBarTab
             text="Sign in"
-            target="/signin"
+            target="/signIn"
+            style={{ paddingStart: 10 }}
+          />
+        )}
+        {user && (
+          <AppBarTab
+            text="Create a review"
+            target="/createReview"
             style={{ paddingStart: 10 }}
           />
         )}
