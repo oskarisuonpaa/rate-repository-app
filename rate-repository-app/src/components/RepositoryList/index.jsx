@@ -12,6 +12,21 @@ const styles = StyleSheet.create({
   },
 });
 
+const ORDER_BY = {
+  0: {
+    orderBy: "CREATED_AT",
+    orderDirection: "DESC",
+  },
+  1: {
+    orderBy: "RATING_AVERAGE",
+    orderDirection: "DESC",
+  },
+  2: {
+    orderBy: "RATING_AVERAGE",
+    orderDirection: "ASC",
+  },
+};
+
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const OrderByMenu = ({ orderBy, setOrderBy }) => {
@@ -20,38 +35,17 @@ const OrderByMenu = ({ orderBy, setOrderBy }) => {
       prompt="Select an item..."
       selectedValue={orderBy}
       onValueChange={(itemValue, itemIndex) => setOrderBy(itemValue)}>
-      <Picker.Item
-        label="Latest repositories"
-        value={{
-          orderBy: "CREATED_AT",
-          orderDirection: "DESC",
-        }}
-      />
-      <Picker.Item
-        label="Highest rated repositories"
-        value={{
-          orderBy: "RATING_AVERAGE",
-          orderDirection: "DESC",
-        }}
-      />
-      <Picker.Item
-        label="Lowest rated repositories"
-        value={{
-          orderBy: "RATING_AVERAGE",
-          orderDirection: "ASC",
-        }}
-      />
+      <Picker.Item label="Latest repositories" value={0} />
+      <Picker.Item label="Highest rated repositories" value={1} />
+      <Picker.Item label="Lowest rated repositories" value={2} />
     </Picker>
   );
 };
 
 const RepositoryList = () => {
   const navigate = useNavigate();
-  const [orderBy, setOrderBy] = useState({
-    orderBy: "CREATED_AT",
-    orderDirection: "DESC",
-  });
-  const { repositories } = useRepositories(orderBy);
+  const [orderBy, setOrderBy] = useState(0);
+  const { repositories } = useRepositories(ORDER_BY[orderBy]);
 
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
