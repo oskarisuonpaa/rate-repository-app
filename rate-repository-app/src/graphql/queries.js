@@ -23,10 +23,21 @@ export const GET_REPOSITORIES = gql`
 `;
 
 export const ME = gql`
-  query {
+  query ($reviews: Boolean!) {
     me {
-      id
       username
+      reviews @include(if: $reviews) {
+        edges {
+          node {
+            repository {
+              fullName
+            }
+            text
+            rating
+            createdAt
+          }
+        }
+      }
     }
   }
 `;
@@ -44,7 +55,6 @@ export const GET_REPOSITORY = gql`
             rating
             createdAt
             user {
-              id
               username
             }
           }

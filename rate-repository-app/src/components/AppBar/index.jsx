@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 });
 
 const AppBar = () => {
-  const result = useQuery(ME);
+  const result = useQuery(ME, { variables: { reviews: false } });
   const apolloClient = useApolloClient();
   const authStorage = useAuthStorage();
   const navigate = useNavigate();
@@ -64,6 +64,13 @@ const AppBar = () => {
           <AppBarTab
             text="Create a review"
             target="/createReview"
+            style={{ paddingStart: 10 }}
+          />
+        )}
+        {user && (
+          <AppBarTab
+            text="My reviews"
+            target="/myReviews"
             style={{ paddingStart: 10 }}
           />
         )}
